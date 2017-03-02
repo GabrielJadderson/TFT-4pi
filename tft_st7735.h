@@ -15,7 +15,7 @@ static const unsigned char TFT_height = 161; //160
 #define SWAP(a, b) { unsigned int t = a; a = b; b = t; }
 
 /** Determine 5-6-5-Color value out of single RGB values */
-#define Color565(r,g,b) (unsigned int)((b & 0xF8) << 8) | ((g & 0xFC) << 3) | (r >> 3)
+#define Color565(r,g,b) (unsigned int)((b >> 3 ) | ((g & 0xFC) << 3) | (r & 0xF8) << 8)
 /** Predefined color */
 #define TFT_BLACK  (Color565(0  ,0  ,0  ))
 /** Predefined color */
@@ -335,7 +335,11 @@ public:
 	void setRotation(rotate_E value);
 
 
+	void drawImage(const char* file, unsigned int x, unsigned int y);
+
 	void drawLetter(unsigned char c, unsigned int x, unsigned int y, unsigned int color, unsigned int size);
+
+	void initSplashScreen(unsigned int delayAmount);
 
 };
 

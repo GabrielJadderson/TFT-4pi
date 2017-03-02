@@ -1,29 +1,3 @@
-/*****************************************************************************************************
-* TFT1_8 1,8" Display from Sainsmart with a ST7735 controller and a RaspberryPi
-*
-* This is an example how to control the 1.8" ST7735 TFTs with the RaspberryPi and the wiringPi library
-*
-* This source code is based on several examples from the internet, mostly for the arduino.
-*
-*
-* v0.1 2014/03/16 - Initial release / jschick
-*
-* This file is part of tft_st7735
-*
-* tft_st7735 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Lesser General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* tft_st7735 is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public License
-* along with tft_st7735. If not, see <http://www.gnu.org/licenses/>.
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,6 +7,10 @@
 #include "wiringPiSPI.h"
 
 #include "tft_st7735.h"
+
+#include <fstream>
+#include <iterator>
+#include <vector>
 
 extern unsigned char  font[];
 
@@ -900,7 +878,38 @@ void TFT_ST7735::initR(void)
 }
 
 
-///////////////////////////////////////////// LETTERS ////////////////////////////////////////////
+//*********************************************************** IMAGE DRAWING ********************************************************
+
+struct ImageGPI
+{
+	int x;
+	int y;
+	int r;
+	int g;
+	int b;
+};
+
+std::istream& operator >> (std::istream& is, ImageGPI& coordinates)
+{
+	is >> coordinates.x >> coordinates.y >> coordinates.r >> coordinates.g >> coordinates.b;
+	return is;
+}
+
+void TFT_ST7735::drawImage(const char* file, unsigned int x, unsigned int y)
+{
+	std::vector<ImageGPI> v;
+	std::ifstream ifs(file);
+	if (ifs)
+	{
+		std::copy(std::istream_iterator<ImageGPI>(ifs), std::istream_iterator<ImageGPI>(), std::back_inserter(v));
+	}
+	// Now we can work with the contents of v
+	for (int i = 0; i < v.size(); i++)
+	{
+		drawPixel(v[i].x + x, v[i].y + y, Color565(v[i].r, v[i].g, v[i].b));
+	}
+}
+////////////////////////////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 /*
 * drawLetter_s:
@@ -910,4 +919,13 @@ void TFT_ST7735::initR(void)
 void TFT_ST7735::drawLetter(unsigned char c, unsigned int x, unsigned int y, unsigned int color, unsigned int size)
 {
 	drawChar(x, y, c, color, size);
+}
+
+void TFT_ST7735::initSplashScreen(unsigned int delayAmount)
+{
+	clearScreen();
+	drawImage("nasa.gpi", (TFT_width / 2) - 40, (TFT_height / 2) - 60);
+	drawImage("ghj.gpi", 10, 100);
+	delay(delayAmount);
+	clearScreen();
 }

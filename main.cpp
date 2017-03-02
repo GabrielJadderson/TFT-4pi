@@ -9,6 +9,13 @@
 #include "DPulseController.h"
 #include <softTone.h>
 
+#include <fstream>
+#include <iostream>
+#include <stdio.h>
+#include <fstream>
+#include <iterator>
+#include <vector>
+
 int main(void)
 {
 
@@ -24,20 +31,20 @@ int main(void)
 	tft.initR();              // initialize display
 	tft.setBackground(TFT_BLACK);
 
-	tft.clearScreen();        // reset Display
 	tft.setRotation(rotate_E::DEGREE_270);
+
+
+	tft.initSplashScreen(5000);
+
+
 	tft.drawString(1, 5, "Initiated Sucessfully", TFT_WHITE, 1);
 	tft.drawHorizontalLine(1, 20, TFT_height, TFT_GRAY);
 
 
 
-
-
-
+	/*
 	int counter = 0;
-
 	char c = counter;
-
 	std::string s = std::to_string(counter);
 	while (counter < 254)
 	{
@@ -48,17 +55,7 @@ int main(void)
 		s = std::to_string(counter);
 		delay(20);
 	}
-
-
-	for (int x = 0; x < 200; x++)
-	{
-		for (int y = 0; y < 200; y++)
-		{
-			tft.drawPixel(x, y, TFT_BLUE);
-		}
-	}
-
-
+	*/
 
 	//DPulseController controller;
 	//controller.pulse(2000, 3500);

@@ -1,0 +1,16 @@
+*.out
+*.tlog
+*.log
+readme/images/ArchOptions.gif
+readme/images/ChangeRemote.gif
+readme/images/debuggerexport.png
+readme/images/ManageConnections.gif
+readme/images/postbuild.png
+readme/images/firstconnection.png
+readme/images/OutputTypes.gif
+readme/images/linker.png
+readme/readme.html
+readme/stylesheet.css
+TFT-4pi.vcxproj
+readme.dox
+TFT-4pi.vcxproj.user
